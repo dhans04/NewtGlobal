@@ -1,0 +1,239 @@
+/* Boolean Data type*/
+
+CREATE TABLE tab_bool(
+	product_id SERIAL PRIMARY KEY,
+	Is_available BOOLEAN
+);
+INSERT INTO tab_bool(IS_available) VALUES ('true'),('t'),('y'),('n'),('1'),('0'),(True),('yes');
+ SELECT * FROM tab_bool;
+ 
+ /*Character types
+ 	CHAR(n) default len =1, remaninig will be take as blank space
+	CHARACTER(n)
+	TEXT any size, remaining spaces will get trimmed
+	VARCHAR(n) no default len, remaining spaces will get trimmed
+ */
+ SELECT CAST ('Adam'AS character(10))as "Name";
+  
+ SELECT 'dhans'::char(10) as "Name";
+ /*
+ 	Numbers :
+		Integer - whole num, +ve and -ve(bigint, smallint,integer) 
+		Fixed Point, Floating point - Two format of fraction of whole num
+ */
+ CREATE TABLE table_serial(
+ 	product_id SERIAL,
+	product_name VARCHAR(100)
+ )
+ 
+ INSERT INTO table_serial(product_name) VALUES('Pen');
+ /* DECIMAL
+ 	numeric,decimal
+	real - 6 digit right precision
+	double precision - 15 digit right precision
+ 	Eg. (numeric(10,2) - will return two digits to the right of the decimal points
+ */
+ CREATE TABLE floating_values(
+ 	column1 NUMERIC(10,5),
+	column2 REAL,
+	column3 DOUBLE PRECISION
+ );
+ INSERT INTO floating_values VALUES(0.9,0.9,0.9);
+ SELECT * FROM floating_values;
+ 
+ /* Date - time
+ 	Date - date only (YYYY-MM-DD) format, (CURRENT_DATE)
+	Time - time only
+	Timestamp - date and time
+	Timestampz - date, time and timestamp
+	Interval  storeval
+ 
+ */
+ 
+ CREATE TABLE table_dates(
+	 id SERIAL PRIMARY KEY,
+	 name VARCHAR(100),
+	 hire_date DATE NOT NULL,
+	 add_date DATE DEFAULT CURRENT_DATE
+ );
+ 
+ INSERT INTO table_dates(name,hire_date)VALUES
+ ('Dhans','23-01-2025');
+SELECT * FROM table_dates;
+/*Time formats
+	(CURRENT_TIME,LOCALTIME,CURRENT_TIME(2),LOCALTIME(2))
+	HH:MM
+	HH:MM::SS
+	HHMMSS
+	MM:SS:PPPPPP
+	HH:MM:SS:PPPPPP
+	HHMMSS:PPPPPP
+	ARITHMETIC OPERATION LIKE +,-
+*/
+CREATE TABLE table_times(
+	id SERIAL PRIMARY KEY,
+	start_time TIME NOT NULL,
+	end_time TIME NOT NULL
+);
+INSERT INTO table_times	(start_time,end_time) VALUES
+('23:56:07','03:07:09');
+SELECT * FROM table_times;
+/*INTERVAL
+interval n type
+type= seconds, minutes, hours, day,month,year...
+*/
+SELECT CURRENT_TIME, CURRENT_TIME+interval'2 hours' AS 	Result;
+/* Timestamp & Timestamptz 
+*/
+CREATE TABLE table_time_tzz(
+	ts TIMESTAMP,
+	tsz TIMESTAMPTZ
+);
+
+INSERT INTO table_time_tzz(ts,tsz) VALUES
+('10-02-2025 10:10:10-07','10-02-2025 10:10:10-07');
+
+SELECT * FROM table_time_tzz;
+
+SHOW TIMEZONE;
+
+SELECT CURRENT_TIMESTAMP;
+
+SELECT TIMEOFDAY();
+
+SELECT TIMEZONE('Asia/Singapore', '10-02-2025 00:00:00');
+
+/*UUID - universal unique identifier 
+	uuid-ossp
+*/
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+/* version 1 v1 - use computer macAddress, currenttimestamp, some random value
+   version 4 v4 - purely random number (no mac add or timestamp);
+*/
+select uuid_generate_v1();
+
+"3431e3d0-e776-11ef-ac97-17f0ad394ad6"
+
+CREATE TABLE table_uuid(
+	product_id UUID DEFAULT uuid_generate_v1(),
+	product_name VARCHAR(100) NOT NULL
+);
+INSERT INTO table_uuid(product_name) VALUES('XYZ');
+SELECT * FROM table_uuid;
+
+/*array datatype
+	variable []
+	single data - phone TEXT
+	array of data - phone TEXT[]
+	
+*/
+CREATE TABLE table_array(
+	id SERIAL,
+	name VARCHAR(100),
+	phone_numb TEXT[]
+);
+SELECT * FROM table_array;
+INSERT INTO table_array(name,phone_numb) VALUES
+('Dhans', ARRAY['7558110721','9789366070']);
+/*
+index - element from array
+ 1 - 1st value
+ 2 - 2nd value
+*/
+SELECT name,phone_numb[1] from table_array;
+
+-- hstore data type
+/*
+	- stores the data into key value pairs
+	- hstore module implements the hstore data type
+	- key value pairs are string only
+	
+*/
+
+CREATE EXTENSION IF NOT EXISTS hstore;
+
+CREATE TABLE table_hstore(
+	book_id SERIAL PRIMARY KEY,
+	title VARCHAR(100) NOT NULL,
+	book_info hstore
+);
+
+INSERT INTO table_hstore(title,book_info) VALUES
+(
+		'Title 1',
+		'
+			"publisher" => "ABC publisher",
+			"Paper_cost" => "50.00",
+			"E_cost" => "4.00"
+		'
+);
+
+SELECT * FROM table_hstore;
+-- acces the ket value pair in hstore using (->) operator
+SELECT book_info -> 'publisher'	FROM table_hstore;
+SELECT book_info -> 'E_cost'	FROM table_hstore;
+
+-- JSON DATA TYPE
+/*
+	- range of processing functions and operator
+*/
+
+CREATE TABLE table_json(
+	id SERIAL PRIMARY KEY,
+	docs JSON
+);
+
+INSERT INTO table_json(docs) VALUES
+('[1,2,3,4,5,6]'),
+('[2,3,4,5,6,7]'),
+('{"Key":"value"}');
+
+SELECT * FROM table_json;
+-- searching specific data json column
+SELECT * FROM table_json WHERE docs @> '2';
+
+ALTER TABLE table_json ALTER COLUMN docs TYPE JSONB;
+
+CREATE INDEX ON table_json USING GIN(docs jsonb_path_ops);
+
+/* NETWORK ADDRESS DATA TYPE
+	  -	stores the IPV4, IPV6, MAC addr
+	  cidr - 7 or 19 bytes IPV4 & IPV6 n/w
+	  inet - 7 or 19 bytes IPV4 & IPV6 hosts and n/w
+	  macaddr - 6 bytes MAC address
+	  macaddr8 - 8bytes MAC address (EUI-64 format)
+	  
+	  - when sorting  inet or cidr data types, IPV$ address will always sort before IPV^ address,
+	  including IPV$ address encapsulated or mapped to IPV6 addresses
+	  
+	  - Types are Bundled with indexing support and advanced fuunction and operator support
+	  
+	  
+
+*/
+
+CREATE TABLE table_netaddr(
+	id SERIAL PRIMARY KEY,
+	IP INET
+);
+
+INSERT INTO table_netaddr (ip) VALUES ('4.35.221.243');
+
+SELECT * FROM table_netaddr;
+
+-- set_masklen () - set network len for inet value
+-- entries for /24 networks ip address
+ SELECT ip, set_masklen(ip,24) AS inet_24 FROM table_netaddr;
+ 
+ -- convert inet to cidr
+ 
+ SELECT ip, set_masklen(ip,24) AS inet_24,
+ set_masklen(ip::cidr,24) AS cidr_24 
+ FROM table_netaddr;
+ 
+ -- we can analyze other network like /27,/28 too by changing the length
+ 
+ SELECT ip, set_masklen(ip,24) AS inet_24,
+ set_masklen(ip::cidr,27) AS cidr_27,
+ set_masklen(ip::cidr,28) AS cidr_28
+ FROM table_netaddr;
