@@ -1,7 +1,7 @@
 /* Boolean Data type*/
 
 CREATE TABLE tab_bool(
-	product_id SERIAL PRIMARY KEY,
+	product_id SERIAL PRIMARY KEY,SECTION 
 	Is_available BOOLEAN
 );
 INSERT INTO tab_bool(IS_available) VALUES ('true'),('t'),('y'),('n'),('1'),('0'),(True),('yes');
