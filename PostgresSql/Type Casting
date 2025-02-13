@@ -1,0 +1,75 @@
+-- Casting using Cast() OR expression::type
+/*
+CAST (expression AS target_data_type);
+
+	expression 		Can be constant , a table column or an expression
+	target_data_type 	Boolean, Charachter(char, varchar, text), Numeric(integer, floating poinyt number),array, JSON, UUID
+						hstore(stores an keyvalue pairs), Temporal type (time,data, timestamp,timestampz,interval),
+						special type (network address, geometric data)
+*/
+--string to int
+SELECT CAST ('10' AS INTEGER);
+SELECT '10'::INTEGER;
+--string to date
+SELECT CAST ('13-02-2025' AS DATE),CAST('13-FEB-2025' AS DATE);
+SELECT '13-02-205'::DATE;
+-- string to boolean
+SELECT CAST('TRUE' AS BOOLEAN);
+SELECT CAST('T' AS BOOLEAN);
+SELECT CAST ('0' AS BOOLEAN);
+--STING TO DOUBLE
+SELECT CAST ('14.7489' ASS DOUBLE PRECISION)
+--string to timestamp
+SELECT '2020-02-20 10:30:25.467'::TIMESTAMP;
+--String to interval
+SELECT 
+	'10 minute'::INTERVAL,
+	'4 hour'::INTERVAL,
+	'1 day'::INTERVAL;
+
+
+--IMPLICIT TO EXPLICIT CONVERSION
+
+SELECT ROUND(10,4) AS "result";
+SELECT ROUND (CAST (10 AS NUMERIC),4) AS "result";
+
+--cast with text
+SELECT SUBSTR('123456',2) AS "result";
+
+SELECT SUBSTR(CAST('123456' AS TEXT),2) AS "explicit";
+
+-- Table data conversion
+
+CREATE TABLE ratings(
+	rating_id SERIAL PRIMARY KEY,
+	rating VARCHAR(1) NOT NULL
+);
+SELECT * FROM ratings;
+
+INSERT INTO ratings(rating)VALUES
+('A'),('B'),('A'),('C'),('D');
+
+--Now we need all ratings into 1 2 3...5 or anything else there make it as 0
+SELECT 
+	rating_id,
+	CASE 
+		WHEN rating~E'^\\d+$' THEN
+			CAST (rating AS INTEGER)
+		ELSE
+			0
+		END as rating
+FROM
+	ratings;
+	
+	
+-- to_char
+/*
+	TO_CHAR(expression,format)
+	TO_CHAR() converts - a timestamp, an interval, an integer, a double presision or numberic value to a string
+	valid format
+		9 Numeric value with the specified number of digits
+		0 Numeric value with leading zeros
+		. (period) Decimal point
+		
+	
+*/
