@@ -70,6 +70,32 @@ FROM
 		9 Numeric value with the specified number of digits
 		0 Numeric value with leading zeros
 		. (period) Decimal point
+		D decimal point that uses locale
+		. (comma) group (thousand) separator
+		FM Fill Mode, which suppresses padding blanks and leading zeros.
+		PR Negative value in angle brackets.
+		S Sign anchored to a number that uses local
+		L currency symbol that uses locale
+		MI minus sign in the specified position for numbers that are less than 0.
+		PL Plus sign in the specified position for numbers that are greater than 0.
+		SG Plus/minus sign in the specified position
+		RN Roman numeral that ranges from 1 to 3999
+		Th or th Uppercase or lower case ordinal number suffix.
 		
-	
+		Pattern Description
+		--------------
+		Y,YYY YEar in 4 digits with comma
+		YYYY Year in 4 digits
+		YYY Last 3 digit of the year
+		YY Last 2 digits of the year
+		Y LAst digit of the year
+		IYYY ISO 8601 week-numbering year (4 or more digits)
+		IYY LAst 3 digits of the ISO 8601 week-numbering year
+		IY LAst 2 digits of the ISO 8601 week-numbering year
+		I LAst digits of the ISO 8601 week-numbering year
+		BC, bc,AD or ad    Era indicator without periods
+		B.C, b.c, A.D or a.d ora.d Era indicator with periods
+		MONTH English month name in Uppercase
+		month  Full capitalized English month name
+ 	
 */
