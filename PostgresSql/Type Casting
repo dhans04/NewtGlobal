@@ -99,3 +99,71 @@ FROM
 		month  Full capitalized English month name
  	
 */
+SELECT TO_CHAR(100870,'9,99999');
+
+SELECT 
+	release_date,
+	TO_CHAR(release_date,'DD-MM-YYYY'),
+	TO_CHAR(release_date,'DD, MM, YYYY')
+FROM movies;
+
+
+SELECT 
+	TO_CHAR(
+		TIMESTAMP '2020-01-02 10:30:45',
+		'HH24:MI:SS'
+	);
+-- D- Decimal point	
+SELECT 
+	movie_id,
+	revenues_domerstic,
+	TO_CHAR(revenues_domestic,'$99999D99')
+FROM movies_revenues;
+
+
+
+-- TO_NUMBER()
+--		TO_NUMBER(string, format)
+
+SELECT TO_NUMBER('1420.89','9999.');
+
+SELECT TO_NUMBER('10,625.78-','99G999D99S');
+
+SELECT TO_NUMBER('$1,420.64','L9G999');
+
+SELECT TO_NUMBER('1,234,567.89','9G999G999');
+
+SELECT TO_NUMBER('1,234,567.89','9G999G999D99');
+
+SELECT TO_NUMBER('$1,978,299.78','L9G999G999.99')
+
+
+-- TO_DATE()
+--		TO_DATE(text, format)
+
+SELECT TO_DATE('2020/10/22','YYYY/MM/DD');
+
+SELECT TO_DATE('02211999','MMDDYYYY');
+
+SELECT TO_DATE('March 07, 2019','Month DD, YYYY');
+
+-- ERROR HANDLING
+
+--SELECT TO_DATE('2020/02/30','YYYY/MM/DD');
+
+--TO_TIMESTAMP()
+--		TO_TIMESTAMP(timestamp,format)
+
+SELECT TO_TIMESTAMP(
+	'2020-10-28 10:30:25',
+	'YYYY-MM-DD HH:MI:SS'
+);
+--It skip spaces
+SELECT TO_TIMESTAMP('2020		May','YYYY MON');
+
+SELECT TO_TIMESTAMP('2020-01-01 32:8:00', 'YYYY-MM-DD HH24:MI:SS');
+
+SELECT TO_TIMESTAMP('2020-01-01 23:8:00', 'YYYY-MM-DD HH24:MI:SS');
+
+
+
