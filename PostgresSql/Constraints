@@ -1,0 +1,67 @@
+-- constraints
+
+--1.NOT NULL
+CREATE TABLE table_name(
+	id SERIAL PRIMARY KEY,
+	tag TEXT NOT NULL
+);
+--		- Not Null in existing table
+CREATE TABLE tab_num2(
+	id SERIAL PRIMARY KEY,
+	tag2 TEXT
+);
+
+ALTER TABLE tab_num2 ALTER COLUMN tag2 SET NOT NULL;
+
+
+--2.UNIQUE
+
+CREATE TABLE tab_email(
+	id SERIAL PRIMARY KEY,
+	email text UNIQUE
+);
+-- 	-UNIQUE on multiple columns
+CREATE TABLE tab3(
+	id SERIAL PRIMARY KEY,
+	prod_code TEXT,
+	prod_name TEXT,
+	UNIQUE(prod_code,prod_name)
+);
+-- Updating unique constraint
+--ALTER TABLE table_name ADD CONSTRAIN yourname UNIQUE (col1,col2....)
+
+
+--3.DEFAULT 
+CREATE TABLE employee_tab(
+	emp_id SERIAL PRIMARY KEY,
+	emp_name TEXT,
+	is_enable TEXT DEFAULT 'Y'
+);
+--	ALTER TABLE tab_name ALTER COLUMN column_name SET DEFAULT 'value'
+
+--drop default value
+ALTER TABLE employee_tab ALTER COLUMN is_enable DROP DEFAULT
+
+--4.PRIMARY KEY
+--constraint name = table_name_pkey
+--Adding pk constraint into table
+ALTER TABLE tablename ADD PRIMARY KEY (col1,col2...)
+--ALTER TABLE table_name DROP CONSTRAINT constraint_name;
+
+
+--5.FOREIGN KEY
+CREATE TABLE t_product(
+	prod_id INT PRIMARY KEY,
+	prod_name VARCHAR(20) NOT NULL,
+	supplier_id INT NOT NULL,
+	FOREIGN KEY(supplier_id) REFERENCES t_supplier(suuplier_id)
+);
+
+CREATE TABLE t_supplier(
+	suuplier_id INT PRIMARY KEY,
+	supplier_name VARCHAR(100) NOT NULL
+);
+
+--Add foreign key constraint
+ALTER TABLE table_name
+ADD CONSTRAINT cname FOREIGN KEY(columnname) REFERENCES table2_name(columnname);
