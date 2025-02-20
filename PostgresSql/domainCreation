@@ -60,3 +60,21 @@ CREATE DOMAIN valid_color VARCHAR(10) CHECK (VALUE IN ('red','green','blue'));
 
 CREATE TABLE colors(color valid_color);
 
+INSERT INTO colors(color) VALUES('red');
+
+INSERT INTO colors(color) VALUES('orange');
+
+
+--Get all domain in a schema which we had created
+--		shortcut is we cam directly see in left side section
+-- we can also use query to get that data
+SELECT typname
+FROM pg_catalog.pg_type
+JOIN pg_catalog.pg_namespace
+ON pg_namespace.oid=pg_type.typnamespace
+WHERE
+typtype = 'd' AND nspname = 'public';
+
+--delete and drop the created domains
+// -- cascase will delete the column of the row which we add used this domain in table
+DROP DOMAIN check_postal_code CASCADE;
