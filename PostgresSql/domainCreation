@@ -1,0 +1,62 @@
+--user defined data type
+
+-- CREATE DOMAIN data type
+/*
+	1. create domain statement create a user-defined data type with 
+		a range, optional DEFAULT, NOT NULL and CHECK constraint
+	2. They have to be unique within a schema scope. Cannot be re-use outside of scope where they are defined
+	3. Help to STANDERDIZE your database data type in one place.
+	4. A domain data type is a COMMON data type and can be RE-USE in multiple columns. Write once and share it
+	5. NULL is default
+	6. Composite Type : Only single value return
+	
+
+	SYNTAX: CREATE DOMAIN name AS data_type constraint
+*/
+
+CREATE DOMAIN addr VARCHAR(100) NOT NULL;
+-- using the created addr type in table creation
+CREATE TABLE location1(address addr);
+-- now the for location1 table the data type of address column is VARCHAR(100) NOT NULL
+INSERT INTO location1(address) VALUES('175, Mill street');
+
+--Checking positive number 
+CREATE DOMAIN age INT NOT NULL CHECK (VALUE > 0);
+
+CREATE TABLE age_table(age_col age);
+
+INSERT INTO age_table(age_col) VALUES(21);
+
+INSERT INTO age_table(age_col) VALUES(0);
+
+--Postal code validation
+CREATE DOMAIN check_postalcode AS TEXT 
+CHECK(
+	VALUE ~'^\d{5}$'
+	OR VALUE ~'^\D{5}-\d{4}$');
+	
+CREATE TABLE addresses1(
+	address_id SERIAL PRIMARY KEY,
+	postal_code check_postalcode
+);
+
+INSERT INTO addresses1 (postal_code) VALUES ('10000-1001-100');
+
+-- email checking
+CREATE DOMAIN proper_email_check VARCHAR(150)
+CHECK( VALUE ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+[.][A-Za-z]+$');
+
+CREATE TABLE client_Details(client_id SERIAL PRIMARY KEY,email proper_email_check);
+
+INSERT INTO client_Details(email)VALUES('ABC@XYZ.COM');
+INSERT INTO client_Details(email)VALUES('ABC@@XYZ.COM');
+
+
+SELECT * FROM client_Details;
+
+--Enumeration Type(Enum or Set of values) domain
+
+CREATE DOMAIN valid_color VARCHAR(10) CHECK (VALUE IN ('red','green','blue'));
+
+CREATE TABLE colors(color valid_color);
+
