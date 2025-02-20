@@ -1,0 +1,80 @@
+-- composite data types
+-- 1. List of field name with corresponding data types
+-- 2. Used in a table as a 'column'
+-- 3. Used in functions or procedures
+-- 4. Can return multiple values, its a composite data type
+
+-- CREATE TYPE name AS (fields columns_properties)
+
+CREATE TYPE addresse As(city VARCHAR(50),country VARCHAR(20));
+
+CREATE TABLE companies(
+	comp_id SERIAL PRIMARY KEY,
+	address addresse
+);
+
+INSERT INTO companies(address) VALUES(ROW('London','UK'));
+
+SELECT (address).country FROM companies;
+
+-- (tablename.composite_column).feild
+
+SELECT (companies.address).city FROM companies;	
+	
+-- alter comopsite data type
+
+--rename the type
+ALTER TYPE addresse RENAME TO my_address
+--Changethe owner name
+ALTER TYPE my_address OWNER TO dhans_sample;
+--change schema
+--	ALTER TYPE name SET SCHEMA schemaname
+
+--To add new attribute
+--	ALTER TYPE schemaname.name ADD ATTRIBUTE attributes
+
+--creating currenct Enum data tyoe with currency data
+
+CREATE TYPE currency AS ENUM('USD','INR','GBP');
+SELECT 'USD'::currency;
+ALTER TYPE currency ADD VALUE 'EUR' AFTER 'INR';
+
+CREATE TABLE stocks(
+	stock_id SERIAL PRIMARY KEY,
+	stock_currency currency
+);
+
+INSERT INTO stocks(stock_currency) VALUES('USD');
+
+SELECT * FROM stocks;
+
+-- Drop TYPE name
+CREATE TYPE sample as (sample_row VARCHAR(20));
+
+DROP TYPE sample
+
+-- ALTER in ENUM data type
+--Update a value
+ALTER TYPE colors RENAME VALUE 'red' TO 'orange';
+-- listt all enum values
+SELECT enum_range(NULL::colors)
+--to add new value
+-- ALTER TYPE name ADD VALUE valuename[BEFORE | AFTER ]value
+ALTER TYPE colors ADD VALUE 'red' BEFORE 'green'
+ALTER TYPE colors ADD VALUE 'red' AFTER 'green'
+
+-- updating type in table
+-- ALTER TABLE table_name ALTER COLUMN coulmn_name TYPE new_type USING table)name::text::old_Type
+
+--ENUM with default value
+CREATE TYPE status AS ENUM ('Pending','approved','declined');
+
+CREATE TABLE job_status(
+	job_id INT,
+	status status DEFAULT 'Pending'
+);
+
+INSERT INTO job_status (job_id)VALUES (1);
+
+SELECT * FROM job_status;
+
