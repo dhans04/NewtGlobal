@@ -1,0 +1,65 @@
+--count
+--SELECT COUNT(*) FROM table_name
+--SELECT COUNT(column_name) FROM table_name
+---- count with distinct
+-- count movies with distinct lang
+SELECT  COUNT( DISTINCT (movie_lang)) FROM movies;
+-- count movies with distinct director id
+SELECT  COUNT( DISTINCT (director_id)) FROM movies;
+-- count using where
+SELECT COUNT(*) FROM movies where movie_lang='English';
+
+--SUM()
+--SELECT SUM(columnname) FROM tablename
+SELECT SUM(revenues_domestic) FROM movies_revenues
+-- using where we need to sum only those have greater than 200
+SELECT SUM(revenues_domestic) FROM movies_revenues WHERE revenues_domestic>200
+--total movie length of all english movies
+SELECT SUM(movie_length) FROM movies WHERE movie_lang='English'
+--sum with distinct
+--SUM(DISTINCT expression)
+SELECT  SUM(DISTINCT revenues_domestic) FROM movies_revenues
+
+--MIN and MAX
+--SELECT MIN(col_name) FROM table_name
+--SELECT MAX(col_name) FROM table_name
+SELECT MAX(movie_length) FROM movies
+SELECT MIN(movie_length) FROM movies
+--max length  english movie
+SELECT MAX(movie_length) FROM movies WHERE movie_lang='English'
+-- if we apply MAX() ON varchar it will return alphabetically highest value as o/p eg:'z' and vice versa for MIN()
+
+--GREATEST(list) LEAST(list)
+--list should be same data type
+SELECT GREATEST(10,45,678)
+SELECT LEAST(10,45,678)
+
+-- AVG(columnname)
+--ignore null value
+SELECT AVG(movie_length) from movies
+--AVG withoutDistinct
+SELECT AVG(movie_length)  FROM movies WHERE movie_lang='English'
+--AVG with Distinct
+SELECT AVG(DISTINCT	movie_length)  FROM movies WHERE movie_lang='English'
+
+--Mathematical operator
+SELECT 10+2 AS addition;
+SELECT 10-2 AS substraction;
+SELECT 11/2 AS divide;
+SELECT 11/2::numeric(10,2) as divide;
+SELECT 2*10  AS multiplication;
+SELECT 14%2 AS modulus
+SELECT 15%2 AS modulus
+
+--combine two column value
+-- if any null value as opeartor ignore those thing and give null as o/p
+SELECT 
+	movie_id,
+	revenues_domestic,
+	revenues_international,
+	(revenues_domestic+revenues_international) AS totalrevenue
+FROM movies_revenues;
+
+
+
+
