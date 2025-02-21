@@ -64,4 +64,15 @@ INSERT INTO seq1 (name) VALUES('XYZ')
 INSERT INTO seq2 (name) VALUES('XYZ')
 SELECT * from seq2
 --create alpha numberic sequence
+CREATE SEQUENCE table_seq;
+CREATE TABLE contacts(
+	contact_id TEXT NOT NULL DEFAULT ('ID'||nextval('table_seq')),
+	contact_name VARCHAR(200)
+);
+--alter sequence and attach to table column
+ALTER SEQUENCE table_seq OWNED BY contacts.contact_id
+
+
+
+
 				
