@@ -1,0 +1,118 @@
+--UPPER,LOWER,INITCAP
+SELECT UPPER('amazing')
+SELECT LOWER('AMAZING')
+SELECT INITCAP('the sun rises in the east')
+SELECT INITCAP(
+		CONCAT(first_name,' ',last_name)
+	) AS full_name
+FROM 
+	directors
+ORDER BY
+	first_name;
+	
+--		LEFT() RIGHT()
+--LEFT(string,n) ->returns first n character from the left if positive, else if negative return all the charachter except last n charachters
+SELECT LEFT('ABCXYZ',-2)
+SELECT LEFT(first_name,1)AS initial FROM directors ORDER BY 1;
+SELECT LEFT(first_name,1)AS initial,COUNT(*) AS total_initials FROM directors GROUP BY 1 ORDER BY 1;
+--RIGHT()
+-- RIGHT(string,n) ->return last n character from the left if positive, else if negative return all the charachter except first n charachters
+SELECT RIGHT('ABCXYZ',2)
+SELECT RIGHT(first_name,1)AS last_char FROM directors ORDER BY 1;
+SELECT RIGHT(first_name,1)AS last_char,COUNT(*) AS total_last_char FROM directors GROUP BY 1 ORDER BY 1;
+
+--REVERSE()
+--REVERSE(string)
+SELECT REVERSE('Amazing PostgreSQL')
+
+--SPLIT_PART()
+--SPLIT_PART(string,delimeter,position)
+SELECT SPLIT_PART('1,2,3',',',2)
+SELECT SPLIT_PART('one-two-three','-',2)
+--for getting year in date datatype
+--SPLIT_PART(date_column::text,delimeter,position)
+SELECT movie_name,release_date,SPLIT_PART(release_date::text,'-',1) As release_year
+from movies;
+
+--TRIM,BTRIM,LTRIM,RTRIM
+/*  TRIM-> remove longest string that contains a specific charachter from a string
+	(LTRIM(string,[charchter])	LTRIM-> remove all char, space by default from left
+	(RTRIM(string,[charchter])	RTRIM-> remove all char, space by default from right
+	(BTRIM(string,[charchter])	BRIM->	combination of the LTRIM() and RTRIM()
+	
+*/
+--SPACE
+--TRIM(LEADING FROM string)
+--TRIM(TRAILING FROM string)
+--TRIM(BOTH FROM string)
+--DEFAULT space
+SELECT 
+	TRIM(
+		LEADING' '
+		FROM 
+			'	AMAZING'
+	),
+	TRIM(
+		TRAILING
+		FROM 
+		'AMAZING	'
+	),
+	TRIM('	AMAZING	');
+--CHAR	
+--TRIM(LEADING 'char' FROM string)
+--TRIM(TRAILING 'char' FROM string)
+--TRIM('char' FROM string)
+SELECT 
+	TRIM(
+		LEADING'0'
+		FROM 
+			'00000AMAZING'
+	);
+--LTRIM()
+SELECT LTRIM('YUMMY','Y');
+--RTRIM()
+SELECT RTRIM('YUMMY','Y');
+--BTRIM()
+SELECT BTRIM('YUMMY','Y');
+SELECT LTRIM('	AMAZING');
+SELECT BTRIM('	AMAZING	');
+SELECT RTRIM('AMAZING	');
+
+--LPAD(),RPAD()
+/* LPAD - pads a string on the left to specifuc len with a seq of char
+   LPAD(string,length[,fill])
+   RPAD - pads a string on the right to specifuc len with a seq of char
+   RPAD(string,length[,fill])
+*/
+SELECT LPAD('Database',15,'*')
+SELECT RPAD('Database',15,'*')
+
+--LENGTH()
+--LENGTH(string);
+SELECT LENGTH('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+SELECT LENGTH(NULL)
+SELECT LENGTH('')
+
+--POSITION()
+--	returns an interger that represents the location of the substring within the string
+SELECT POSITION('is' IN'This is a computer' )
+
+--STRPOS()
+--string position STRPOS(<string>,<substring>)
+SELECT STRPOS('World Bank','Bank');
+--return the data those having 'on' on their last name
+SELECT first_name,last_name FROM directors WHERE STRPOS(last_name,'on')>0;
+
+--SUBSTR()
+--SELECT SUBSTRING('sentence' from star_pos for length)
+SELECT SUBSTRING('What a wonderful world' from 3 for 4)
+
+--REPEAT
+--SELECT(string,count)
+SELECT REPEAT('A',4)
+SELECT REPEAT('AB',8)
+
+--REPLACE(string,from_substring,to_substring)
+
+SELECT REPLACE('ABC XYZ','X','1')
+SELECT REPLACE('ABC XYZ','XYZ','LMNOP')
