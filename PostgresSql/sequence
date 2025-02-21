@@ -1,0 +1,67 @@
+-- CREATING SEQUENCE
+CREATE SEQUENCE IF NOT EXISTS sequence_name;
+--Advance the sequence and return the new value
+SELECT nextval('sequence_name');
+--return the current value of the sequence
+SELECT currval('sequence_name');
+--set value
+SELECT setval('sequence_name',100)
+--setting value and not updating it further
+SELECT setval('sequence_name',200,false)
+--control sequence with start value
+CREATE SEQUENCE IF NOT EXISTS sequence_name1 START WITH 500 
+--Alter sequence
+ALTER SEQUENCE sequence_name RESTART WITH 30;
+ALTER SEQUENCE sequence_name RENAME TO sequencename
+--Delete/Drop a sequence
+DROP SEQUENCE sequencename
+--Increment the sequence with particular interval
+ALTER SEQUENCE public.sequence_name INCREMENT 20 CYCLE
+--CREATING SEQUENCE WITH SOME CONDITIONS
+CREATE SEQUENCE IF NOT EXISTS seq_nm
+INCREMENT 50
+MINVALUE 400
+MAXVALUE 6000
+START WITH 500
+
+SELECT nextval('seq_nm')
+
+--Creating sequence with diff data type
+-- (BigInt | INT | SMALLINT) default - BIGINT
+CREATE SEQUENCE seq_nm2 AS INT
+--Making the squence in descending order
+CREATE SEQUENCE  seq_des INCREMENT -1 MINVALUE 1 MAXVALUE 3 START 3 CYCLE
+SELECT nextval('seq_des')
+--no cycle
+CREATE SEQUENCE  seq_des1 INCREMENT -1 MINVALUE 1 MAXVALUE 3 START 3 NO CYCLE
+SELECT nextval('seq_des1')
+--Attach sequence to table column
+CREATE TABLE user12(
+	user_id SERIAL PRIMARY KEY,
+	user_name VARCHAR(20)
+);
+INSERT INTO user12(user_name)VALUES('XYZ')
+SELECT * FROM user12
+--option1
+ALTER SEQUENCE user12_user_id_seq RESTART WITH 100
+--option2
+--CREATE SEQUENCE seq_name START WITH 100 OWNED BY tablename.coumnname
+
+CREATE SEQUENCE user12_user_id_seq START WITH 100 OWNED BY user12.user_id
+
+ALTER TABLE user12 ALTER COLUMN user_id SET DEFAULT nextval('user12_user_id_seq')
+--list all sequence
+SELECT relname sequence_name FROM pg_class WHERE relkind='5';
+--share single sequence between two tables
+CREATE SEQUENCE common_seq START WITH 100
+CREATE TABLE seq1(id1 INT DEFAULT nextval('common_seq') NOT NULL,
+					name1 VARCHAR(20)
+);
+CREATE TABLE seq2(id1 INT DEFAULT nextval('common_seq') NOT NULL,
+					name1 VARCHAR(20)
+);
+INSERT INTO seq1 (name) VALUES('XYZ')
+INSERT INTO seq2 (name) VALUES('XYZ')
+SELECT * from seq2
+--create alpha numberic sequence
+				
