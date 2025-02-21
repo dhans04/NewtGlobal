@@ -116,3 +116,6 @@ SELECT REPEAT('AB',8)
 
 SELECT REPLACE('ABC XYZ','X','1')
 SELECT REPLACE('ABC XYZ','XYZ','LMNOP')
+
+--update the table date with replace 
+UPDATE SET col1=REPLACE(col1,from_substring,to_substring)
